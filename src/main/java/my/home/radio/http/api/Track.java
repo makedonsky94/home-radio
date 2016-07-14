@@ -34,14 +34,6 @@ public class Track {
         return batchId;
     }
 
-    public String getFrom() {
-        return "radio-web-genre-"+genre+"-direct";
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
     @Override
     public String toString() {
         return "Track{" +
