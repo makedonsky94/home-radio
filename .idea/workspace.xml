@@ -2,12 +2,50 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bda1383e-7a13-457b-8c62-f5033b39c528" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/my/home/radio/http/Manager.class" afterPath="$PROJECT_DIR$/target/classes/my/home/radio/http/Manager.class" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\compiler.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\copyright\profiles_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\description.html" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\inspectionProfiles\Project_Default.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\inspectionProfiles\profiles_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\libraries\Maven__com_googlecode_soundlibs_jlayer_1_0_1_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\libraries\Maven__com_googlecode_soundlibs_mp3spi_1_9_5_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\libraries\Maven__com_googlecode_soundlibs_tritonus_share_0_3_7_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\libraries\Maven__commons_codec_commons_codec_1_9.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\libraries\Maven__commons_logging_commons_logging_1_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\libraries\Maven__junit_junit_3_8_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\libraries\Maven__log4j_log4j_1_2_17.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\libraries\Maven__org_apache_httpcomponents_httpclient_4_5_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\libraries\Maven__org_apache_httpcomponents_httpcore_4_4_4.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\libraries\Maven__org_json_json_20160212.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\project-template.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\uiDesigner.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\vcs.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\.idea\workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\Yandex Radio.iml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\cookies.json" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\log4j.properties" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\Configuration.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\Main.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\application\Application$Console.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\application\Application.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\help\Set$Element.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\help\Set.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\http\Manager$Config.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\http\Manager.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\http\Player$DownloadInfo.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\http\Player.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\http\api\ApiObject.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\http\api\Auth.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\http\api\Settings.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\classes\my\home\radio\http\api\Track.class" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\maven-archiver\pom.properties" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\maven-status\maven-compiler-plugin\compile\default-compile\createdFiles.lst" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\maven-status\maven-compiler-plugin\compile\default-compile\inputFiles.lst" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\maven-status\maven-compiler-plugin\testCompile\default-testCompile\inputFiles.lst" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Sasha\Desktop\Yandex Radio\target\yandex-radio-0.1.jar" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/my/home/radio/http/Manager.java" afterPath="$PROJECT_DIR$/src/main/java/my/home/radio/http/Manager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/my/home/radio/http/api/Track.java" afterPath="$PROJECT_DIR$/src/main/java/my/home/radio/http/api/Track.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Yandex Radio.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -59,27 +97,17 @@
               <caret line="73" column="70" selection-start-line="73" selection-start-column="70" selection-end-line="73" selection-end-column="70" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2662#2663#0" expanded="true" />
-                <element signature="e#2712#2713#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Manager.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Manager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/my/home/radio/http/Manager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="63" column="33" selection-start-line="63" selection-start-column="33" selection-end-line="63" selection-end-column="33" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#12659#12660#0" expanded="false" />
-                <element signature="e#12715#12716#0" expanded="false" />
-                <element signature="e#12757#12758#0" expanded="false" />
-                <element signature="e#12803#12804#0" expanded="false" />
-                <element signature="e#12860#12861#0" expanded="false" />
-                <element signature="e#12912#12913#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.45232815">
+              <caret line="63" column="34" selection-start-line="63" selection-start-column="34" selection-end-line="63" selection-end-column="34" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -90,29 +118,9 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
               <folding>
-                <element signature="e#639#640#0" expanded="false" />
-                <element signature="e#680#681#0" expanded="false" />
+                <element signature="e#794#795#0" expanded="true" />
+                <element signature="e#824#825#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="log4j-application.log" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/log4j-application.log">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.12639405">
-              <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -200,9 +208,9 @@
         <option value="$PROJECT_DIR$/src/main/resources/log4j.properties" />
         <option value="$PROJECT_DIR$/src/main/java/my/home/radio/http/Player.java" />
         <option value="$PROJECT_DIR$/src/main/java/my/home/radio/application/Application.java" />
-        <option value="$PROJECT_DIR$/src/main/java/my/home/radio/http/Manager.java" />
         <option value="$PROJECT_DIR$/src/main/java/my/home/radio/http/api/Track.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/main/java/my/home/radio/http/Manager.java" />
       </list>
     </option>
   </component>
@@ -250,9 +258,9 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1616" />
+    <option name="x" value="77" />
+    <option name="y" value="30" />
+    <option name="width" value="1612" />
     <option name="height" value="876" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -558,6 +566,13 @@
       <option name="number" value="Default" />
       <updated>1467400379586</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added .gitignore">
+      <created>1468508753602</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1468508753602</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView">
@@ -570,32 +585,32 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <frame x="77" y="30" width="1612" height="876" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32123655" sideWeight="0.49485862" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32258064" sideWeight="0.50771207" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32840616" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.35618278" sideWeight="0.4922879" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.311054" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31185567" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39919356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32123655" sideWeight="0.49485862" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35618278" sideWeight="0.4922879" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39919356" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -608,6 +623,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added .gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added .gitignore" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -664,15 +683,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#12659#12660#0" expanded="false" />
-            <element signature="e#12715#12716#0" expanded="false" />
-            <element signature="e#12757#12758#0" expanded="false" />
-            <element signature="e#12803#12804#0" expanded="false" />
-            <element signature="e#12860#12861#0" expanded="false" />
-            <element signature="e#12912#12913#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -688,8 +699,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="43" column="18" selection-start-line="43" selection-start-column="18" selection-end-line="43" selection-end-column="18" />
           <folding>
-            <element signature="e#639#640#0" expanded="false" />
-            <element signature="e#680#681#0" expanded="false" />
+            <element signature="e#794#795#0" expanded="true" />
+            <element signature="e#824#825#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -731,15 +742,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#12659#12660#0" expanded="false" />
-            <element signature="e#12715#12716#0" expanded="false" />
-            <element signature="e#12757#12758#0" expanded="false" />
-            <element signature="e#12803#12804#0" expanded="false" />
-            <element signature="e#12860#12861#0" expanded="false" />
-            <element signature="e#12912#12913#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -938,6 +941,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.67184037">
           <caret line="1348" column="22" selection-start-line="1348" selection-start-column="22" selection-end-line="1348" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -985,14 +989,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/my/home/radio/application/Application.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/my/home/radio/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="73" column="70" selection-start-line="73" selection-start-column="70" selection-end-line="73" selection-end-column="70" />
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2662#2663#0" expanded="true" />
-            <element signature="e#2712#2713#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.12639405">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/log4j-application.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/my/home/radio/http/api/Track.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+          <folding>
+            <element signature="e#794#795#0" expanded="true" />
+            <element signature="e#824#825#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1005,10 +1034,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/my/home/radio/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/my/home/radio/application/Application.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <caret line="73" column="70" selection-start-line="73" selection-start-column="70" selection-end-line="73" selection-end-column="70" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1017,43 +1046,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/my/home/radio/http/Manager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="63" column="33" selection-start-line="63" selection-start-column="33" selection-end-line="63" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#12659#12660#0" expanded="false" />
-            <element signature="e#12715#12716#0" expanded="false" />
-            <element signature="e#12757#12758#0" expanded="false" />
-            <element signature="e#12803#12804#0" expanded="false" />
-            <element signature="e#12860#12861#0" expanded="false" />
-            <element signature="e#12912#12913#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/my/home/radio/http/api/Track.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
-          <folding>
-            <element signature="e#639#640#0" expanded="false" />
-            <element signature="e#680#681#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/log4j-application.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12639405">
-          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        <state vertical-scroll-proportion="0.45232815">
+          <caret line="63" column="34" selection-start-line="63" selection-start-column="34" selection-end-line="63" selection-end-column="34" />
           <folding />
         </state>
       </provider>

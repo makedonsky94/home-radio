@@ -61,7 +61,7 @@ public class Manager {
      * -lounge
      * -electronics
      */
-    private String genre = "disco";
+    private String genre = "lounge";
 
     public Manager() {
         store = getCookieStore();
