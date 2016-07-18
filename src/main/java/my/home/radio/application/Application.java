@@ -7,7 +7,6 @@ import my.home.radio.http.api.Track;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -22,7 +21,7 @@ public class Application {
     private Player player;
 
     /**
-     * Точка входа в приложение
+     * Run application
      */
     public void run() {
         try {
@@ -62,8 +61,6 @@ public class Application {
 
     private void playMusic(Track track) throws IOException {
         Manager.getInstance().startTrack(auth, track);
-
-        LOGGER.info("\u001b[0;31m" + "Current track: " + track.toString() + "\u001b[m");
         player.play(auth, track);
     }
 

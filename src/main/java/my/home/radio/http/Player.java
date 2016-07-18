@@ -15,6 +15,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main player of the application
@@ -26,8 +28,11 @@ public class Player {
     private String result;
     private Application.Console console;
 
+    private List<Track> trackHistory;
+
     public Player(Application.Console console) {
         this.console = console;
+        this.trackHistory = new ArrayList<>();
     }
 
     /**
@@ -35,6 +40,7 @@ public class Player {
      * @throws IOException
      */
     public void play(Auth auth, Track track) throws IOException {
+        LOGGER.info("\u001b[0;31m" + "Current track: " + track.toString() + "\u001b[m");
         String path = Configuration.DOMAIN + Configuration.API_VERSION
                 + "/handlers/track/" +track.getId() + ":" + track.getAlbumId() + "/radio-web-genre-"+track.getGenre()+"-direct/download/m?hq=0&external-domain=radio.yandex.ru&overembed=no";
         String json = Manager.getInstance().get(path, null);
@@ -62,6 +68,10 @@ public class Player {
         InputStream in = new BufferedInputStream(uc.getInputStream());
 
         try {
+            if(trackHistory.indexOf(track) == -1) {
+                trackHistory.add(track);
+            }
+
             LOGGER.info("Start playing music");
             AudioInputStream stream = AudioSystem.getAudioInputStream(in);
             AudioFormat baseFormat = stream.getFormat();
@@ -72,8 +82,8 @@ public class Player {
                     baseFormat.getChannels() * 2,
                     baseFormat.getSampleRate(),
                     false);
-            AudioInputStream din = AudioSystem.getAudioInputStream(decodedFormat, stream);
-            play(auth, track, decodedFormat, din);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(decodedFormat, stream);
+            play(auth, track, decodedFormat, audioInputStream);
             in.close();
         } catch (UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
@@ -81,36 +91,71 @@ public class Player {
     }
 
 
-    private void play(Auth auth ,Track track, AudioFormat targetFormat, AudioInputStream inputStream) throws IOException, LineUnavailableException {
+    private void play(Auth auth, Track track, AudioFormat targetFormat, AudioInputStream inputStream) throws IOException, LineUnavailableException {
         byte[] data = new byte[4096];
         SourceDataLine line = getLine(targetFormat);
         if (line != null)
         {
             line.start();
-            int nBytesRead = 0;
-            while (nBytesRead != -1)
-            {
-                if(console.hasCommands()) {
-                    String command = console.next().toLowerCase();
-                    if(command.equals("stop")) {
-                        break;
-                    }
-                    if(command.equals("dislike")) {
-                        Manager.getInstance().dislikeTrack(auth, track);
-                        break;
-                    }
+            playLine(auth, track, data, line, inputStream);
+            closeLine(auth, track, line, inputStream);
+        }
+    }
+
+    private void playLine(Auth auth, Track track, byte[] data, SourceDataLine line, AudioInputStream inputStream) throws IOException {
+        int nBytesRead = 0;
+        while (nBytesRead != -1)
+        {
+            if(console.hasCommands()) {
+                String command = console.next().toLowerCase();
+                if(command.equals("next")) {
+                    break;
                 }
-                nBytesRead = inputStream.read(data, 0, data.length);
-                if (nBytesRead != -1) {
-                    line.write(data, 0, nBytesRead);
+                if(command.equals("previous")) {
+                    closeLine(auth, track, line, inputStream);
+                    int previousIndex = trackHistory.size() > 1 ? trackHistory.size() - 2 : 0;
+                    Track previousTrack = trackHistory.get(previousIndex);
+                    play(auth, previousTrack);
+                    break;
+                }
+                if(command.equals("dislike")) {
+                    Manager.getInstance().dislikeTrack(auth, track);
+                    break;
+                }
+                if(command.equals("increase_volume")) {
+                    FloatControl floatControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+                    float value = floatControl.getValue() + 1f;
+                    value = value > 6f ? 6f : value;
+                    floatControl.setValue(value);
+                    LOGGER.info("Current volume value: " + value);
+                }
+                if(command.equals("decrease_volume")) {
+                    FloatControl floatControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+                    float value = floatControl.getValue() - 1f;
+                    value = value < -80.0f ? -80.0f : value;
+                    floatControl.setValue(value);
+                    LOGGER.info("Current volume value: " + value);
+                }
+                if(command.equals("mute")) {
+                    BooleanControl booleanControl = (BooleanControl) line.getControl(BooleanControl.Type.MUTE);
+                    booleanControl.setValue(!booleanControl.getValue());
+                    LOGGER.info("Muted: " + booleanControl.getValue());
                 }
             }
-            line.drain();
-            line.stop();
-            line.close();
-            inputStream.close();
-            Manager.getInstance().endTrack(auth, track, 10);
+            nBytesRead = inputStream.read(data, 0, data.length);
+            if (nBytesRead != -1) {
+                line.write(data, 0, nBytesRead);
+            }
         }
+    }
+
+    private void closeLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException {
+        double duration = line.getMicrosecondPosition() / (double) 1000 / (double) 1000;
+        line.drain();
+        line.stop();
+        line.close();
+        inputStream.close();
+        Manager.getInstance().endTrack(auth, track, duration);
     }
 
     private SourceDataLine getLine(AudioFormat audioFormat) throws LineUnavailableException {
