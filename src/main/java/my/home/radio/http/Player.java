@@ -18,6 +18,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -26,12 +28,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Player {
     private static final Logger LOGGER = Logger.getLogger(Player.class);
 
-    private String src;
-    private String result;
     private Application.Console console;
     private Application.Socket socket;
 
     private List<Track> trackHistory;
+
+    private boolean pause;
 
     public Player(Application.Console console, Application.Socket socket) {
         this.console = console;
@@ -50,7 +52,7 @@ public class Player {
         String json = Manager.getInstance().get(path, null);
 
         JSONObject jsonObject = new JSONObject(json);
-        src = jsonObject.getString("src") + "&format=json";
+        String src = jsonObject.getString("src") + "&format=json";
 
         Manager.Config config = Manager.Config.defaultGetConfig();
         config.parameters.add("Referer", "https://radio.yandex.ru/genre/" + track.getGenre());
@@ -59,7 +61,7 @@ public class Player {
         config.replace("Host", "storage.mds.yandex.net");
         config.remove("X-Retpath-Y");
 
-        result = Manager.getInstance().get(src, config);
+        String result = Manager.getInstance().get(src, config);
 
         JSONObject downloadInformation = new JSONObject(result);
         DownloadInfo info = DownloadInfo.fromJSON(downloadInformation);
@@ -68,6 +70,8 @@ public class Player {
         URL url = new URL(downloadPath);
 
         URLConnection uc = url.openConnection();
+
+        LOGGER.info("File size: " + uc.getContentLengthLong() + " bytes");
 
         InputStream in = new BufferedInputStream(uc.getInputStream());
 
@@ -106,8 +110,10 @@ public class Player {
     }
 
     private void playLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException {
-        List<SoundLine> buffer = new CopyOnWriteArrayList<>();
+
+        Queue<SoundLine> buffer = new ConcurrentLinkedQueue<>();
         ByteReader reader = new ByteReader(buffer, inputStream);
+        reader.setDaemon(true);
         reader.start();
 
         while (true)
@@ -153,14 +159,26 @@ public class Player {
                     booleanControl.setValue(!booleanControl.getValue());
                     LOGGER.info("Muted: " + booleanControl.getValue());
                 }
+                if(command.equals("pause")) {
+                    pause = !pause;
+                    LOGGER.info("Paused: " + pause);
+                }
             }
 
             if(buffer.size() == 0) {
                 continue;
             }
 
-            SoundLine soundLine = buffer.get(0);
-            buffer.remove(0);
+            if(pause) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    LOGGER.error("Error when called wait method", e);
+                }
+                continue;
+            }
+
+            SoundLine soundLine = buffer.poll();
             if(soundLine.end) {
                 break;
             }
@@ -185,19 +203,11 @@ public class Player {
         return res;
     }
 
-    @Override
-    public String toString() {
-        return "Player{" +
-                ", result='" + result + '\'' +
-                ", src='" + src + '\'' +
-                '}';
-    }
-
     private static class ByteReader extends Thread {
-        List<SoundLine> lines;
+        Queue<SoundLine> lines;
         InputStream inputStream;
 
-        public ByteReader(List<SoundLine> lines, InputStream inputStream) {
+        public ByteReader(Queue<SoundLine> lines, InputStream inputStream) {
             this.lines = lines;
             this.inputStream = inputStream;
         }
@@ -223,7 +233,7 @@ public class Player {
     }
 
     private static class SoundLine {
-        byte[] array;
+        byte[] array = new byte[4096];
         boolean end;
         int bytesRead;
 
@@ -233,8 +243,6 @@ public class Player {
             this.bytesRead = bytesRead;
         }
     }
-
-
 
     /**
      * Information about downloaded track

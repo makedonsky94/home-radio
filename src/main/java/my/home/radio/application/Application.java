@@ -130,53 +130,57 @@ public class Application {
                 serverSocketChannel.socket().bind(new InetSocketAddress("localhost", 4545));
                 serverSocketChannel.configureBlocking(false);
                 serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-                while (true) {
-                    selector.select();
-                    Set selectedKeys = selector.selectedKeys();
-                    Iterator iterator = selectedKeys.iterator();
-                    while (iterator.hasNext()) {
-                        SelectionKey selectionKey = (SelectionKey) iterator.next();
-                        if (selectionKey.isAcceptable()) {
-                            SocketChannel sock = serverSocketChannel.accept();
-                            if(sock != null) {
-                                sock.configureBlocking(false);
-                                sock.register(selector, SelectionKey.OP_READ);
-                                LOGGER.info(sock.toString() + " connected");
-                            }
-                        }
-
-                        if (selectionKey.isReadable()) {
-                            SocketChannel socketChannel =
-                                    (SocketChannel) selectionKey.channel();
-                            try {
-                                ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-                                socketChannel.read(byteBuffer);
-                                socketChannel.register(selector, SelectionKey.OP_WRITE);
-
-                                String msg = new String(byteBuffer.array());
-                                Pattern pattern = Pattern.compile("(?<=command\\s)\\S+");
-                                Matcher matcher = pattern.matcher(msg);
-                                if(matcher.find()) {
-                                    String command = matcher.group();
-
-                                    if(command.equals("exit")) {
-                                        System.exit(0);
-                                    }
-
-                                    LOGGER.info("Added command " + command);
-                                    commands.add(command);
-                                }
-                            } catch(IOException e) {
-                                e.printStackTrace();
-                                socketChannel.register(selector, SelectionKey.OP_WRITE);
-                                LOGGER.warn(socketChannel.toString() + " register to write");
-                            }
-                        }
-                        iterator.remove();
-                    }
-                }
+                runSocketListener(selector, serverSocketChannel);
             } catch(IOException ex) {
                 LOGGER.error(ex.getMessage());
+            }
+        }
+
+        private void runSocketListener(Selector selector, ServerSocketChannel serverSocketChannel) throws IOException {
+            while (true) {
+                selector.select();
+                Set selectedKeys = selector.selectedKeys();
+                Iterator iterator = selectedKeys.iterator();
+                while (iterator.hasNext()) {
+                    SelectionKey selectionKey = (SelectionKey) iterator.next();
+                    if (selectionKey.isAcceptable()) {
+                        SocketChannel sock = serverSocketChannel.accept();
+                        if(sock != null) {
+                            sock.configureBlocking(false);
+                            sock.register(selector, SelectionKey.OP_READ);
+                            LOGGER.info(sock.toString() + " connected");
+                        }
+                    }
+
+                    if (selectionKey.isReadable()) {
+                        SocketChannel socketChannel =
+                                (SocketChannel) selectionKey.channel();
+                        try {
+                            ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+                            socketChannel.read(byteBuffer);
+                            socketChannel.register(selector, SelectionKey.OP_WRITE);
+
+                            String msg = new String(byteBuffer.array());
+                            Pattern pattern = Pattern.compile("(?<=command\\s)\\S+");
+                            Matcher matcher = pattern.matcher(msg);
+                            if(matcher.find()) {
+                                String command = matcher.group();
+
+                                if(command.equals("exit")) {
+                                    System.exit(0);
+                                }
+
+                                LOGGER.info("Added command " + command);
+                                commands.add(command);
+                            }
+                        } catch(IOException e) {
+                            e.printStackTrace();
+                            socketChannel.register(selector, SelectionKey.OP_WRITE);
+                            LOGGER.warn(socketChannel.toString() + " register to write");
+                        }
+                    }
+                    iterator.remove();
+                }
             }
         }
 
