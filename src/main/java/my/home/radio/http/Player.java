@@ -13,10 +13,12 @@ import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Main player of the application
@@ -27,11 +29,13 @@ public class Player {
     private String src;
     private String result;
     private Application.Console console;
+    private Application.Socket socket;
 
     private List<Track> trackHistory;
 
-    public Player(Application.Console console) {
+    public Player(Application.Console console, Application.Socket socket) {
         this.console = console;
+        this.socket = socket;
         this.trackHistory = new ArrayList<>();
     }
 
@@ -92,22 +96,30 @@ public class Player {
 
 
     private void play(Auth auth, Track track, AudioFormat targetFormat, AudioInputStream inputStream) throws IOException, LineUnavailableException {
-        byte[] data = new byte[4096];
         SourceDataLine line = getLine(targetFormat);
         if (line != null)
         {
             line.start();
-            playLine(auth, track, data, line, inputStream);
+            playLine(auth, track, line, inputStream);
             closeLine(auth, track, line, inputStream);
         }
     }
 
-    private void playLine(Auth auth, Track track, byte[] data, SourceDataLine line, AudioInputStream inputStream) throws IOException {
-        int nBytesRead = 0;
-        while (nBytesRead != -1)
+    private void playLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException {
+        List<SoundLine> buffer = new CopyOnWriteArrayList<>();
+        ByteReader reader = new ByteReader(buffer, inputStream);
+        reader.start();
+
+        while (true)
         {
+            String command = null;
             if(console.hasCommands()) {
-                String command = console.next().toLowerCase();
+                command = console.next().toLowerCase().trim();
+            }
+            if(socket.hasCommands() && command == null) {
+                command = socket.next().toLowerCase().trim();
+            }
+            if(command != null) {
                 if(command.equals("next")) {
                     break;
                 }
@@ -142,10 +154,18 @@ public class Player {
                     LOGGER.info("Muted: " + booleanControl.getValue());
                 }
             }
-            nBytesRead = inputStream.read(data, 0, data.length);
-            if (nBytesRead != -1) {
-                line.write(data, 0, nBytesRead);
+
+            if(buffer.size() == 0) {
+                continue;
             }
+
+            SoundLine soundLine = buffer.get(0);
+            buffer.remove(0);
+            if(soundLine.end) {
+                break;
+            }
+
+            line.write(soundLine.array, 0, soundLine.bytesRead);
         }
     }
 
@@ -172,6 +192,49 @@ public class Player {
                 ", src='" + src + '\'' +
                 '}';
     }
+
+    private static class ByteReader extends Thread {
+        List<SoundLine> lines;
+        InputStream inputStream;
+
+        public ByteReader(List<SoundLine> lines, InputStream inputStream) {
+            this.lines = lines;
+            this.inputStream = inputStream;
+        }
+
+        @Override
+        public void run() {
+            int bytesRead;
+            while(true) {
+                try {
+                    byte[] data = new byte[4096];
+                    bytesRead = inputStream.read(data, 0, data.length);
+                    lines.add(new SoundLine(data, bytesRead == -1, bytesRead));
+                    if(bytesRead == -1) {
+                        LOGGER.info("Downloading completed.");
+                        break;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    break;
+                }
+            }
+        }
+    }
+
+    private static class SoundLine {
+        byte[] array;
+        boolean end;
+        int bytesRead;
+
+        public SoundLine(byte[] array, boolean end, int bytesRead) {
+            this.array = array;
+            this.end = end;
+            this.bytesRead = bytesRead;
+        }
+    }
+
+
 
     /**
      * Information about downloaded track
