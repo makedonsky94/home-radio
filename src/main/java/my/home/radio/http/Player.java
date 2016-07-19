@@ -233,7 +233,7 @@ public class Player {
     }
 
     private static class SoundLine {
-        byte[] array = new byte[4096];
+        byte[] array;
         boolean end;
         int bytesRead;
 
