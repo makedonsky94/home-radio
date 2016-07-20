@@ -1,6 +1,7 @@
-package my.home.radio.http.api;
+package my.home.radio.models;
 
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Track {
@@ -9,6 +10,7 @@ public class Track {
     private String title;
     private String batchId;
     private String genre;
+    private String artist;
 
     public Track(JSONObject jsonObject, String genre) {
         this.genre = genre;
@@ -20,6 +22,17 @@ public class Track {
                 .getInt("id");
         batchId = track.getString("batchId");
         title = track.getString("title");
+
+        JSONArray artists = track.getJSONArray("artists");
+        StringBuilder artistNameBuilder = new StringBuilder();
+        for(int i = 0; i < artists.length(); i++) {
+            artistNameBuilder.append(artists.getJSONObject(i).getString("name"));
+            if(i != artists.length() - 1) {
+                artistNameBuilder.append(", ");
+            }
+        }
+
+        artist = artistNameBuilder.toString();
     }
 
     public String getId() {
@@ -39,8 +52,10 @@ public class Track {
         return "Track{" +
                 "id=" + id +
                 ", albumId=" + albumId +
+                ", artist='" + artist + '\'' +
                 ", title='" + title + '\'' +
                 ", batchId='" + batchId + '\'' +
+                ", genre='" + genre + '\'' +
                 '}';
     }
 

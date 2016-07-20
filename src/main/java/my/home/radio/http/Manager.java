@@ -2,8 +2,8 @@ package my.home.radio.http;
 
 import my.home.radio.Configuration;
 import my.home.radio.help.Set;
-import my.home.radio.http.api.Auth;
-import my.home.radio.http.api.Track;
+import my.home.radio.models.Auth;
+import my.home.radio.models.Track;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
@@ -61,7 +61,7 @@ public class Manager {
      * -lounge
      * -electronics
      */
-    private String genre = "lounge";
+    private String genre = "alternative";
 
     public Manager() {
         store = getCookieStore();

@@ -1,9 +1,9 @@
 package my.home.radio.application;
 
 import my.home.radio.http.Manager;
-import my.home.radio.http.api.Auth;
+import my.home.radio.models.Auth;
 import my.home.radio.http.Player;
-import my.home.radio.http.api.Track;
+import my.home.radio.models.Track;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;

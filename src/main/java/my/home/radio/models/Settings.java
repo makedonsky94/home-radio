@@ -1,4 +1,4 @@
-package my.home.radio.http.api;
+package my.home.radio.models;
 
 import my.home.radio.Configuration;
 import my.home.radio.http.Manager;

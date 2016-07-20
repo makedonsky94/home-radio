@@ -3,8 +3,8 @@ package my.home.radio.http;
 
 import my.home.radio.Configuration;
 import my.home.radio.application.Application;
-import my.home.radio.http.api.Auth;
-import my.home.radio.http.api.Track;
+import my.home.radio.models.Auth;
+import my.home.radio.models.Track;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -13,14 +13,12 @@ import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Main player of the application
