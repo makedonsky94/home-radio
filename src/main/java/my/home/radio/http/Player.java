@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Main player of the application
@@ -91,13 +92,13 @@ public class Player {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(decodedFormat, stream);
             play(auth, track, decodedFormat, audioInputStream);
             in.close();
-        } catch (UnsupportedAudioFileException | LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | LineUnavailableException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
 
-    private void play(Auth auth, Track track, AudioFormat targetFormat, AudioInputStream inputStream) throws IOException, LineUnavailableException {
+    private void play(Auth auth, Track track, AudioFormat targetFormat, AudioInputStream inputStream) throws IOException, LineUnavailableException, InterruptedException {
         SourceDataLine line = getLine(targetFormat);
         if (line != null)
         {
@@ -107,9 +108,9 @@ public class Player {
         }
     }
 
-    private void playLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException {
+    private void playLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException, InterruptedException {
 
-        Queue<SoundLine> buffer = new ConcurrentLinkedQueue<>();
+        LinkedBlockingQueue<SoundLine> buffer = new LinkedBlockingQueue<>();
         ByteReader reader = new ByteReader(buffer, inputStream);
         reader.setDaemon(true);
         reader.start();
@@ -163,10 +164,6 @@ public class Player {
                 }
             }
 
-            if(buffer.size() == 0) {
-                continue;
-            }
-
             if(pause) {
                 try {
                     Thread.sleep(100);
@@ -176,7 +173,7 @@ public class Player {
                 continue;
             }
 
-            SoundLine soundLine = buffer.poll();
+            SoundLine soundLine = buffer.take();
             if(soundLine.end) {
                 break;
             }
