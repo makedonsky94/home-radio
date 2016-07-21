@@ -40,7 +40,7 @@ public class Player {
     }
 
     /**
-     * Play track
+     * Starts playing tracks
      * @throws IOException
      */
     public void start(Auth auth) throws IOException {
@@ -61,6 +61,10 @@ public class Player {
         }
     }
 
+    /**
+     * Starts specific track
+     * @throws IOException
+     */
     private void startTrack(Auth auth, Track track) throws IOException {
         Manager.getInstance().startTrack(auth, track);
 
@@ -116,6 +120,14 @@ public class Player {
         }
     }
 
+    /**
+     * Plays music
+     * @param targetFormat Decoded music format
+     * @param inputStream AudioInputStream which created with {@code targetFormat}
+     * @throws IOException
+     * @throws LineUnavailableException
+     * @throws InterruptedException
+     */
     private void play(Auth auth, Track track, AudioFormat targetFormat, AudioInputStream inputStream) throws IOException, LineUnavailableException, InterruptedException {
         SourceDataLine line = getLine(targetFormat);
         if (line != null)
@@ -126,6 +138,11 @@ public class Player {
         }
     }
 
+    /**
+     * Plays SourceDataLine
+     * @throws IOException
+     * @throws InterruptedException
+     */
     private void playLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException, InterruptedException {
         LinkedBlockingQueue<SoundLine> buffer = new LinkedBlockingQueue<>();
         ByteReader reader = new ByteReader(buffer, inputStream);
@@ -206,6 +223,10 @@ public class Player {
         }
     }
 
+    /**
+     * Closes SourceDataLine and sends information about ending of track
+     * @throws IOException
+     */
     private void closeLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException {
         if(!line.isOpen()) {
             return;
@@ -218,6 +239,11 @@ public class Player {
         Manager.getInstance().endTrack(auth, track, duration);
     }
 
+    /**
+     * Method helper for {@link Player#play(Auth, Track, AudioFormat, AudioInputStream)}
+     * @return SourceDataLine which got from {@code audioFormat}
+     * @throws LineUnavailableException
+     */
     private SourceDataLine getLine(AudioFormat audioFormat) throws LineUnavailableException {
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
         SourceDataLine res = (SourceDataLine) AudioSystem.getLine(info);
@@ -225,6 +251,9 @@ public class Player {
         return res;
     }
 
+    /**
+     * Thread for reading bytes from stream
+     */
     private static class ByteReader extends Thread {
         Queue<SoundLine> lines;
         InputStream inputStream;
@@ -254,6 +283,9 @@ public class Player {
         }
     }
 
+    /**
+     * Container for keeping information about byte's fragment
+     */
     private static class SoundLine {
         byte[] array;
         boolean end;
