@@ -18,7 +18,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -44,7 +43,27 @@ public class Player {
      * Play track
      * @throws IOException
      */
-    public void play(Auth auth, Track track) throws IOException {
+    public void start(Auth auth) throws IOException {
+        while(true) {
+            List<Track> tracks = Manager.getInstance().getTracks();
+
+            if(tracks.size() == 0) {
+                LOGGER.warn("Track list is empty");
+                return;
+            }
+
+            LOGGER.info("Track list has been accepted");
+            LOGGER.info(tracks);
+
+            for(Track track : tracks) {
+                startTrack(auth, track);
+            }
+        }
+    }
+
+    private void startTrack(Auth auth, Track track) throws IOException {
+        Manager.getInstance().startTrack(auth, track);
+
         LOGGER.info("\u001b[0;31m" + "Current track: " + track.toString() + "\u001b[m");
         String path = Configuration.DOMAIN + Configuration.API_VERSION
                 + "/handlers/track/" +track.getId() + ":" + track.getAlbumId() + "/radio-web-genre-"+track.getGenre()+"-direct/download/m?hq=0&external-domain=radio.yandex.ru&overembed=no";
@@ -97,7 +116,6 @@ public class Player {
         }
     }
 
-
     private void play(Auth auth, Track track, AudioFormat targetFormat, AudioInputStream inputStream) throws IOException, LineUnavailableException, InterruptedException {
         SourceDataLine line = getLine(targetFormat);
         if (line != null)
@@ -109,7 +127,6 @@ public class Player {
     }
 
     private void playLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException, InterruptedException {
-
         LinkedBlockingQueue<SoundLine> buffer = new LinkedBlockingQueue<>();
         ByteReader reader = new ByteReader(buffer, inputStream);
         reader.setDaemon(true);
@@ -132,7 +149,7 @@ public class Player {
                     closeLine(auth, track, line, inputStream);
                     int previousIndex = trackHistory.size() > 1 ? trackHistory.size() - 2 : 0;
                     Track previousTrack = trackHistory.get(previousIndex);
-                    play(auth, previousTrack);
+                    startTrack(auth, previousTrack);
                     break;
                 }
                 if(command.equals("dislike")) {
@@ -162,6 +179,13 @@ public class Player {
                     pause = !pause;
                     LOGGER.info("Paused: " + pause);
                 }
+                if(command.contains("genre_")) {
+                    String genre = command.replace("genre_", "");
+                    closeLine(auth, track, line, inputStream);
+                    Manager.getInstance().setGenre(genre);
+                    start(auth);
+                    break;
+                }
             }
 
             if(pause) {
@@ -183,6 +207,9 @@ public class Player {
     }
 
     private void closeLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException {
+        if(!line.isOpen()) {
+            return;
+        }
         double duration = line.getMicrosecondPosition() / (double) 1000 / (double) 1000;
         line.drain();
         line.stop();

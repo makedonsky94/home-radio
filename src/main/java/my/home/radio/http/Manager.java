@@ -62,10 +62,30 @@ public class Manager {
      * -electronics
      */
     private String genre = "lounge";
+    private String[] genres = {
+            "pop",
+            "disco",
+            "indie",
+            "local-indie",
+            "rock",
+            "metal",
+            "alternative",
+            "lounge",
+            "electronics"
+    };
 
     public Manager() {
         store = getCookieStore();
         client = getClient(store);
+    }
+
+    public void setGenre(String genre) {
+        if(!Arrays.asList(genres).contains(genre)) {
+            LOGGER.warn("Genre " + genre + " does not exists");
+            return;
+        }
+        this.genre = genre;
+        LOGGER.warn("Genre set to " + genre);
     }
 
     public String get(String urlString, Config config) throws IOException {

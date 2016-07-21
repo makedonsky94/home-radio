@@ -51,21 +51,7 @@ public class Application {
             socket.start();
 
             player = new Player(console, socket);
-            while(true) {
-                List<Track> tracks = Manager.getInstance().getTracks();
-
-                if(tracks.size() == 0) {
-                    LOGGER.warn("Track list is empty");
-                    return;
-                }
-
-                LOGGER.info("Track list has been accepted");
-                LOGGER.info(tracks);
-
-                for(Track track : tracks) {
-                    playMusic(track);
-                }
-            }
+            player.start(auth);
         } catch (IOException e) {
             LOGGER.error("Application has been closed with IOException", e);
         } catch (InterruptedException e) {
@@ -73,16 +59,11 @@ public class Application {
         }
     }
 
-    private void playMusic(Track track) throws IOException {
-        Manager.getInstance().startTrack(auth, track);
-        player.play(auth, track);
-    }
-
     /**
      * List of commands:
      * exit: Close application
-     * stop: Stop current music and play next
-     * dislike: Stop current music, make 'disabled' mark and play next
+     * stop: Stop current music and start next
+     * dislike: Stop current music, make 'disabled' mark and start next
      */
     public static class Console extends Thread {
         Scanner sc = new Scanner(System.in);
