@@ -258,6 +258,11 @@ public class Player {
         Queue<SoundLine> lines;
         InputStream inputStream;
 
+        long timestamp = System.currentTimeMillis();
+        int counter = 0;
+        final int interval = 1000;
+        final int bytesLimit = 50000; // bytes per interval
+
         public ByteReader(Queue<SoundLine> lines, InputStream inputStream) {
             this.lines = lines;
             this.inputStream = inputStream;
@@ -266,8 +271,18 @@ public class Player {
         @Override
         public void run() {
             int bytesRead;
+
             while(true) {
                 try {
+                    if (counter > bytesLimit) {
+                        long now = System.currentTimeMillis();
+                        if (timestamp + interval >= now) {
+                            Thread.sleep(timestamp + interval - now);
+                        }
+                        timestamp = now;
+                        counter = 0;
+                    }
+
                     byte[] data = new byte[4096];
                     bytesRead = inputStream.read(data, 0, data.length);
                     lines.add(new SoundLine(data, bytesRead == -1, bytesRead));
@@ -275,12 +290,48 @@ public class Player {
                         LOGGER.info("Downloading completed.");
                         break;
                     }
-                } catch (IOException e) {
+
+                    counter++;
+                } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                     break;
                 }
             }
         }
+
+//        public static byte[] readFully(InputStream inputStream, int var1, boolean var2) throws IOException {
+//            byte[] var3 = new byte[0];
+//            if(var1 == -1) {
+//                var1 = 2147483647;
+//            }
+//
+//            int var6;
+//            for(int var4 = 0; var4 < var1; var4 += var6) {
+//                int var5;
+//                if(var4 >= var3.length) {
+//                    var5 = Math.min(var1 - var4, var3.length + 1024);
+//                    if(var3.length < var4 + var5) {
+//                        var3 = Arrays.copyOf(var3, var4 + var5);
+//                    }
+//                } else {
+//                    var5 = var3.length - var4;
+//                }
+//
+//                var6 = inputStream.read(var3, var4, var5);
+//                if(var6 < 0) {
+//                    if(var2 && var1 != 2147483647) {
+//                        throw new EOFException("Detect premature EOF");
+//                    }
+//
+//                    if(var3.length != var4) {
+//                        var3 = Arrays.copyOf(var3, var4);
+//                    }
+//                    break;
+//                }
+//            }
+//
+//            return var3;
+//        }
     }
 
     /**
