@@ -8,7 +8,11 @@ public class Main {
 
     public static void main(String[] args) {
         LOGGER.info("Application has been started");
-        Application application = new Application();
-        application.run();
+        try {
+            Application application = new Application();
+            application.run();
+        } catch (InterruptedException e) {
+            LOGGER.error("Wait call error", e);
+        }
     }
 }

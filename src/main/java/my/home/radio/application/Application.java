@@ -27,35 +27,34 @@ import java.util.regex.Pattern;
 public class Application {
     private static Logger LOGGER = Logger.getLogger(Application.class);
 
-    private Auth auth;
-    private Player player;
-
     /**
      * Run application
      */
-    public void run() {
-        try {
-            auth = new Auth().call();
+    public void run() throws InterruptedException {
+        while(true) {
+            try {
+                Auth auth = new Auth().call();
 
-            while(!Manager.getInstance().isAvailable()) {
-                wait(1000);
-                LOGGER.warn("Yandex radio isn't available");
+                while (!Manager.getInstance().isAvailable()) {
+                    wait(1000);
+                    LOGGER.warn("Yandex radio isn't available");
+                }
+
+                Console console = new Console();
+                console.setDaemon(true);
+                console.start();
+
+                Socket socket = new Socket();
+                socket.setDaemon(true);
+                socket.start();
+
+                Player player = new Player(console, socket);
+                player.start(auth);
+            } catch (IOException e) {
+                LOGGER.error("Application has been closed with IOException", e);
             }
-
-            Console console = new Console();
-            console.setDaemon(true);
-            console.start();
-
-            Socket socket = new Socket();
-            socket.setDaemon(true);
-            socket.start();
-
-            player = new Player(console, socket);
-            player.start(auth);
-        } catch (IOException e) {
-            LOGGER.error("Application has been closed with IOException", e);
-        } catch (InterruptedException e) {
-            LOGGER.error("Wait call error", e);
+            wait(1000);
+            LOGGER.info("Restarting application...");
         }
     }
 

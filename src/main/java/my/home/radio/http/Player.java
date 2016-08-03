@@ -32,6 +32,7 @@ public class Player {
     private List<Track> trackHistory;
 
     private boolean pause;
+    private boolean mute;
 
     public Player(Application.Console console, Application.Socket socket) {
         this.console = console;
@@ -144,6 +145,8 @@ public class Player {
      * @throws InterruptedException
      */
     private void playLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException, InterruptedException {
+        setSettings(line);
+
         LinkedBlockingQueue<SoundLine> buffer = new LinkedBlockingQueue<>();
         ByteReader reader = new ByteReader(buffer, inputStream);
         reader.setDaemon(true);
@@ -188,9 +191,9 @@ public class Player {
                     LOGGER.info("Current volume value: " + value);
                 }
                 if(command.equals("mute")) {
-                    BooleanControl booleanControl = (BooleanControl) line.getControl(BooleanControl.Type.MUTE);
-                    booleanControl.setValue(!booleanControl.getValue());
-                    LOGGER.info("Muted: " + booleanControl.getValue());
+                    mute = !mute;
+                    setSettings(line);
+                    LOGGER.info("Muted: " + mute);
                 }
                 if(command.equals("pause")) {
                     pause = !pause;
@@ -251,6 +254,11 @@ public class Player {
         return res;
     }
 
+    private void setSettings(SourceDataLine line) {
+        BooleanControl booleanControl = (BooleanControl) line.getControl(BooleanControl.Type.MUTE);
+        booleanControl.setValue(mute);
+    }
+
     /**
      * Thread for reading bytes from stream
      */
@@ -291,47 +299,13 @@ public class Player {
                         break;
                     }
 
-                    counter++;
+                    counter += bytesRead;
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                     break;
                 }
             }
         }
-
-//        public static byte[] readFully(InputStream inputStream, int var1, boolean var2) throws IOException {
-//            byte[] var3 = new byte[0];
-//            if(var1 == -1) {
-//                var1 = 2147483647;
-//            }
-//
-//            int var6;
-//            for(int var4 = 0; var4 < var1; var4 += var6) {
-//                int var5;
-//                if(var4 >= var3.length) {
-//                    var5 = Math.min(var1 - var4, var3.length + 1024);
-//                    if(var3.length < var4 + var5) {
-//                        var3 = Arrays.copyOf(var3, var4 + var5);
-//                    }
-//                } else {
-//                    var5 = var3.length - var4;
-//                }
-//
-//                var6 = inputStream.read(var3, var4, var5);
-//                if(var6 < 0) {
-//                    if(var2 && var1 != 2147483647) {
-//                        throw new EOFException("Detect premature EOF");
-//                    }
-//
-//                    if(var3.length != var4) {
-//                        var3 = Arrays.copyOf(var3, var4);
-//                    }
-//                    break;
-//                }
-//            }
-//
-//            return var3;
-//        }
     }
 
     /**
