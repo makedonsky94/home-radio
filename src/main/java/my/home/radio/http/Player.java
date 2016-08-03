@@ -190,6 +190,22 @@ public class Player {
                     floatControl.setValue(value);
                     LOGGER.info("Current volume value: " + value);
                 }
+                if(command.contains("volume_")) {
+                    int value = Integer.valueOf(command.replace("volume_", ""));
+                    if(value < 0 || value > 100) {
+                        LOGGER.warn("Volume value can't be less than 0 and greater than 100");
+                        break;
+                    }
+                    float onePercent = 86.0f / 100;
+                    float increaseValue = onePercent * value;
+                    float volume = -80.0f + increaseValue;
+                    volume = Math.round(volume);
+                    volume = volume > 6f ? 6f : volume;
+                    volume = volume < -80.0f ? -80.0f : volume;
+                    FloatControl floatControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+                    floatControl.setValue(volume);
+                    LOGGER.info("Current volume value: " + volume);
+                }
                 if(command.equals("mute")) {
                     mute = !mute;
                     setSettings(line);
