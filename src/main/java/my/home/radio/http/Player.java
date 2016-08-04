@@ -300,7 +300,7 @@ public class Player {
                 try {
                     if (counter > bytesLimit) {
                         long now = System.currentTimeMillis();
-                        if (timestamp + interval >= now) {
+                        if (timestamp + interval >= now && lines.size() > 3000) {
                             Thread.sleep(timestamp + interval - now);
                         }
                         timestamp = now;

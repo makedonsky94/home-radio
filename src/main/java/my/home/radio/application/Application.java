@@ -53,7 +53,7 @@ public class Application {
                 LOGGER.error("Application has been closed with IOException", e);
             }
 
-            LOGGER.info("Restarting application...");
+            LOGGER.info("Restarting application in 10 seconds...");
             Thread.sleep(10000);
         }
     }
