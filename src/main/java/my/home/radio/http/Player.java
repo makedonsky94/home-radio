@@ -285,7 +285,7 @@ public class Player {
         long timestamp = System.currentTimeMillis();
         int counter = 0;
         final int interval = 1000;
-        final int bytesLimit = 50000; // bytes per interval
+        final int bytesLimit = 150000; // bytes per interval
 
         public ByteReader(Queue<SoundLine> lines, InputStream inputStream) {
             this.lines = lines;
