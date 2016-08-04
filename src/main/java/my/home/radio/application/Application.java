@@ -3,7 +3,6 @@ package my.home.radio.application;
 import my.home.radio.http.Manager;
 import my.home.radio.models.Auth;
 import my.home.radio.http.Player;
-import my.home.radio.models.Track;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -36,7 +35,7 @@ public class Application {
                 Auth auth = new Auth().call();
 
                 while (!Manager.getInstance().isAvailable()) {
-                    wait(1000);
+                    Thread.sleep(1000);
                     LOGGER.warn("Yandex radio isn't available");
                 }
 
@@ -53,8 +52,9 @@ public class Application {
             } catch (IOException e) {
                 LOGGER.error("Application has been closed with IOException", e);
             }
-            wait(1000);
+
             LOGGER.info("Restarting application...");
+            Thread.sleep(10000);
         }
     }
 
