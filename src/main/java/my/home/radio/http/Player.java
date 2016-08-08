@@ -16,9 +16,8 @@ import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Main player of the application
@@ -146,11 +145,12 @@ public class Player {
      */
     private void playLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException, InterruptedException {
         setSettings(line);
+        SoundBuffer soundBuffer = new SoundBuffer();
 
-        LinkedBlockingQueue<SoundLine> buffer = new LinkedBlockingQueue<>();
-        ByteReader reader = new ByteReader(buffer, inputStream);
+        ByteReader reader = new ByteReader(inputStream, soundBuffer);
         reader.setDaemon(true);
         reader.start();
+        byte[] bytes = new byte[4096];
 
         while (true)
         {
@@ -233,12 +233,12 @@ public class Player {
                 continue;
             }
 
-            SoundLine soundLine = buffer.take();
-            if(soundLine.end) {
+            if(soundBuffer.read(bytes)) {
+                line.write(bytes, 0, bytes.length);
+            } else {
                 break;
             }
 
-            line.write(soundLine.array, 0, soundLine.bytesRead);
         }
     }
 
@@ -279,43 +279,40 @@ public class Player {
      * Thread for reading bytes from stream
      */
     private static class ByteReader extends Thread {
-        Queue<SoundLine> lines;
         InputStream inputStream;
+        SoundBuffer buffer;
 
         long timestamp = System.currentTimeMillis();
-        int counter = 0;
         final int interval = 1000;
-        final int bytesLimit = 150000; // bytes per interval
+        byte[] data = new byte[4096];
 
-        public ByteReader(Queue<SoundLine> lines, InputStream inputStream) {
-            this.lines = lines;
+        public ByteReader(InputStream inputStream, SoundBuffer buffer) {
             this.inputStream = inputStream;
+            this.buffer = buffer;
         }
 
         @Override
         public void run() {
             int bytesRead;
-
             while(true) {
                 try {
-                    if (counter > bytesLimit) {
+                    if (buffer.overwrite()) {
                         long now = System.currentTimeMillis();
-                        if (timestamp + interval >= now && lines.size() > 3000) {
+                        if (timestamp + interval >= now) {
                             Thread.sleep(timestamp + interval - now);
                         }
                         timestamp = now;
-                        counter = 0;
                     }
 
-                    byte[] data = new byte[4096];
                     bytesRead = inputStream.read(data, 0, data.length);
-                    lines.add(new SoundLine(data, bytesRead == -1, bytesRead));
+
                     if(bytesRead == -1) {
+                        buffer.close();
                         LOGGER.info("Downloading completed.");
                         break;
                     }
 
-                    counter += bytesRead;
+                    buffer.write(data);
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                     break;
@@ -325,17 +322,63 @@ public class Player {
     }
 
     /**
-     * Container for keeping information about byte's fragment
+     * Container for keeping bytes array
      */
-    private static class SoundLine {
-        byte[] array;
-        boolean end;
-        int bytesRead;
+    private static class SoundBuffer {
+        private static int FRAGMENT_SIZE = 4096;
+        private volatile byte[] array = new byte[FRAGMENT_SIZE * 10];
+        private int step;
+        private int read;
+        private boolean end;
 
-        public SoundLine(byte[] array, boolean end, int bytesRead) {
-            this.array = array;
-            this.end = end;
-            this.bytesRead = bytesRead;
+        /**
+         * read bytes from stream
+         * @param out array to read
+         * @return true, if it's not end of stream
+         * @throws InterruptedException
+         */
+        public boolean read(byte[] out) throws InterruptedException {
+            if (end && read >= step) {
+                return false;
+            }
+
+            while (read >= step) {
+                Thread.sleep(200);
+            }
+
+            System.arraycopy(array, read * FRAGMENT_SIZE, out, 0, FRAGMENT_SIZE);
+            read++;
+            return true;
+        }
+
+        /**
+         * write bytes array to buffer
+         */
+        public void write(byte[] in) {
+            if(end) {
+                return;
+            }
+
+            if ((step + 1) * FRAGMENT_SIZE >= array.length) {
+                array = Arrays.copyOf(array, (int) (array.length * 1.5));
+            }
+
+            System.arraycopy(in, 0, array, FRAGMENT_SIZE * step, FRAGMENT_SIZE);
+            step++;
+        }
+
+        /**
+         * returns true, if written bytes much more than read
+         */
+        public boolean overwrite() {
+            return step - read > 3000;
+        }
+
+        /**
+         * close buffer
+         */
+        public void close() {
+            end = true;
         }
     }
 
