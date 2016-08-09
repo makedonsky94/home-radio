@@ -71,7 +71,28 @@ public class Manager {
             "metal",
             "alternative",
             "lounge",
-            "electronics"
+            "electronics",
+            "dubstep",
+            "industrial",
+            "experimental",
+            "dance",
+            "house",
+            "techno",
+            "trance",
+            "dnb",
+            "rap",
+            "rusrap",
+            "rnb",
+            "urban",
+            "soul",
+            "funk",
+            "jazz",
+            "tradjazz",
+            "conjazz",
+            "soundtrack",
+            "films",
+            "videogame",
+            "relax"
     };
 
     public Manager() {
