@@ -168,10 +168,12 @@ public class Player {
             }
             if(command != null) {
                 if(command.equals("next")) {
+                    pause = false;
                     soundBuffer.destroy();
                     break;
                 }
                 if(command.equals("previous")) {
+                    pause = false;
                     closeLine(auth, track, line, inputStream, soundBuffer);
                     int previousIndex = trackHistory.size() > 1 ? trackHistory.size() - 2 : 0;
                     Track previousTrack = trackHistory.get(previousIndex);
