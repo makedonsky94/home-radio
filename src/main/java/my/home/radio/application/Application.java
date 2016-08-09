@@ -112,6 +112,7 @@ public class Application {
                                 "relax"
                         };
                         LOGGER.info(Arrays.toString(genres));
+                        continue;
                     }
                     commands.add(string);
                 }
