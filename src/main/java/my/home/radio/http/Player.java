@@ -3,6 +3,7 @@ package my.home.radio.http;
 
 import my.home.radio.Configuration;
 import my.home.radio.application.Application;
+import my.home.radio.help.Strings;
 import my.home.radio.models.Auth;
 import my.home.radio.models.Track;
 import org.apache.log4j.Logger;
@@ -68,7 +69,10 @@ public class Player {
     private void startTrack(Auth auth, Track track) throws IOException {
         Manager.getInstance().startTrack(auth, track);
 
-        LOGGER.info("\u001b[0;31m" + "Current track: " + track.toString() + "\u001b[m");
+        LOGGER.info(Strings.CONSOLE_SEPARATOR);
+        LOGGER.info("Current track: " + track.toString());
+        LOGGER.info(Strings.CONSOLE_SEPARATOR);
+
         String path = Configuration.DOMAIN + Configuration.API_VERSION
                 + "/handlers/track/" +track.getId() + ":" + track.getAlbumId() + "/radio-web-genre-"+track.getGenre()+"-direct/download/m?hq=0&external-domain=radio.yandex.ru&overembed=no";
         String json = Manager.getInstance().get(path, null);
@@ -113,7 +117,9 @@ public class Player {
                     baseFormat.getSampleRate(),
                     false);
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(decodedFormat, stream);
-            play(auth, track, decodedFormat, audioInputStream);
+
+            SoundBuffer soundBuffer = new SoundBuffer();
+            play(auth, track, decodedFormat, audioInputStream, soundBuffer);
             in.close();
         } catch (UnsupportedAudioFileException | LineUnavailableException | InterruptedException e) {
             e.printStackTrace();
@@ -128,13 +134,13 @@ public class Player {
      * @throws LineUnavailableException
      * @throws InterruptedException
      */
-    private void play(Auth auth, Track track, AudioFormat targetFormat, AudioInputStream inputStream) throws IOException, LineUnavailableException, InterruptedException {
+    private void play(Auth auth, Track track, AudioFormat targetFormat, AudioInputStream inputStream, SoundBuffer buffer) throws IOException, LineUnavailableException, InterruptedException {
         SourceDataLine line = getLine(targetFormat);
         if (line != null)
         {
             line.start();
-            playLine(auth, track, line, inputStream);
-            closeLine(auth, track, line, inputStream);
+            playLine(auth, track, line, inputStream, buffer);
+            closeLine(auth, track, line, inputStream, buffer);
         }
     }
 
@@ -143,9 +149,8 @@ public class Player {
      * @throws IOException
      * @throws InterruptedException
      */
-    private void playLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException, InterruptedException {
+    private void playLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream, SoundBuffer soundBuffer) throws IOException, InterruptedException {
         setSettings(line);
-        SoundBuffer soundBuffer = new SoundBuffer();
 
         ByteReader reader = new ByteReader(inputStream, soundBuffer);
         reader.setDaemon(true);
@@ -163,10 +168,11 @@ public class Player {
             }
             if(command != null) {
                 if(command.equals("next")) {
+                    soundBuffer.destroy();
                     break;
                 }
                 if(command.equals("previous")) {
-                    closeLine(auth, track, line, inputStream);
+                    closeLine(auth, track, line, inputStream, soundBuffer);
                     int previousIndex = trackHistory.size() > 1 ? trackHistory.size() - 2 : 0;
                     Track previousTrack = trackHistory.get(previousIndex);
                     startTrack(auth, previousTrack);
@@ -175,20 +181,6 @@ public class Player {
                 if(command.equals("dislike")) {
                     Manager.getInstance().dislikeTrack(auth, track);
                     break;
-                }
-                if(command.equals("increase_volume")) {
-                    FloatControl floatControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
-                    float value = floatControl.getValue() + 1f;
-                    value = value > 6f ? 6f : value;
-                    floatControl.setValue(value);
-                    LOGGER.info("Current volume value: " + value);
-                }
-                if(command.equals("decrease_volume")) {
-                    FloatControl floatControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
-                    float value = floatControl.getValue() - 1f;
-                    value = value < -80.0f ? -80.0f : value;
-                    floatControl.setValue(value);
-                    LOGGER.info("Current volume value: " + value);
                 }
                 if(command.contains("volume_")) {
                     int value = Integer.valueOf(command.replace("volume_", ""));
@@ -217,7 +209,7 @@ public class Player {
                 }
                 if(command.contains("genre_")) {
                     String genre = command.replace("genre_", "");
-                    closeLine(auth, track, line, inputStream);
+                    closeLine(auth, track, line, inputStream, soundBuffer);
                     Manager.getInstance().setGenre(genre);
                     start(auth);
                     break;
@@ -246,7 +238,7 @@ public class Player {
      * Closes SourceDataLine and sends information about ending of track
      * @throws IOException
      */
-    private void closeLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream) throws IOException {
+    private void closeLine(Auth auth, Track track, SourceDataLine line, AudioInputStream inputStream, SoundBuffer buffer) throws IOException {
         if(!line.isOpen()) {
             return;
         }
@@ -255,11 +247,12 @@ public class Player {
         line.stop();
         line.close();
         inputStream.close();
+        buffer.destroy();
         Manager.getInstance().endTrack(auth, track, duration);
     }
 
     /**
-     * Method helper for {@link Player#play(Auth, Track, AudioFormat, AudioInputStream)}
+     * Method helper for {@link Player#play(Auth, Track, AudioFormat, AudioInputStream, SoundBuffer)}
      * @return SourceDataLine which got from {@code audioFormat}
      * @throws LineUnavailableException
      */
@@ -343,6 +336,10 @@ public class Player {
             }
 
             while (read >= step) {
+                if(end) {
+                    return false;
+                }
+
                 Thread.sleep(200);
             }
 
@@ -379,6 +376,11 @@ public class Player {
          */
         public void close() {
             end = true;
+        }
+
+        public void destroy() {
+            end = true;
+            array = null;
         }
     }
 

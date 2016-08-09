@@ -78,7 +78,7 @@ public class Application {
                         return;
                     }
                     if(string.toLowerCase().equals("help")) {
-                        LOGGER.info("Available commands: next, previous, like, dislike, increase_volume, decrease_volume, mute, exit");
+                        LOGGER.info("Available commands: next, previous, volume_<value>, genre_<value>, pause, mute, exit");
                     }
                     commands.add(string);
                 }
