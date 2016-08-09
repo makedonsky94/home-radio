@@ -12,10 +12,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,6 +76,42 @@ public class Application {
                     }
                     if(string.toLowerCase().equals("help")) {
                         LOGGER.info("Available commands: next, previous, volume_<value>, genre_<value>, pause, mute, exit");
+                        continue;
+                    }
+                    if(string.toLowerCase().equals("genres")) {
+                        String[] genres = {
+                                "pop",
+                                "disco",
+                                "indie",
+                                "local-indie",
+                                "rock",
+                                "metal",
+                                "alternative",
+                                "lounge",
+                                "electronics",
+                                "dubstep",
+                                "industrial",
+                                "experimental",
+                                "dance",
+                                "house",
+                                "techno",
+                                "trance",
+                                "dnb",
+                                "rap",
+                                "rusrap",
+                                "rnb",
+                                "urban",
+                                "soul",
+                                "funk",
+                                "jazz",
+                                "tradjazz",
+                                "conjazz",
+                                "soundtrack",
+                                "films",
+                                "videogame",
+                                "relax"
+                        };
+                        LOGGER.info(Arrays.toString(genres));
                     }
                     commands.add(string);
                 }
